@@ -1,12 +1,36 @@
+def first_nonzero(row):
+    pass
+
+
+def one_position(pos):
+    pass
+
+
+def matrix_check(matrix):
+    pass
+
+
+def space_length(i):
+    pass
+
+
+def dot_product(m1, m2):
+    pass
+
+
+def expanded_dot_product(m1, m2):
+    pass
+
+
 class Matrix(object):
     """Python matrix representation"""
 
     def __init__(self, *args):
         """Initializes the matrix
-           Accepted entries:
-              foo = Matrix(2, 3) <-> Creates a 2x3 matrix with all values as 0
-              foo = Matrix(4, 3, 2) <-> Creates a 4x3 matrix with all values as 2
-              foo = Matrix([[1,2], [3,4]]) <-> Turns the list into a Matrix object
+        Accepted entries:
+          foo = Matrix(2, 3) <-> Creates a 2x3 matrix with all values as 0
+          foo = Matrix(4, 3, 2) <-> Creates a 4x3 matrix with all values as 2
+          foo = Matrix([[1,2], [3,4]]) <-> Turns the list into a Matrix object
         """
         if len(args) == 2:
             self.rows = args[0]
@@ -34,7 +58,10 @@ class Matrix(object):
         """
         if not any(isinstance(l, list) for l in self.matrix):
             self.matrix = [self.matrix]
-        return '\n'.join([' '.join([str(element).rjust(space_length(self.matrix)) for element in row]) for row in self.matrix]) + "\n"
+        return '\n'.join(
+            [' '.join(
+                [str(element).rjust(space_length(self.matrix))
+                    for element in row]) for row in self.matrix]) + "\n"
 
     def __eq__(self, other):
         """ == Checks if two matrices are equal."""
@@ -49,7 +76,9 @@ class Matrix(object):
            Eg: Checks whether the dimensions of self.matrix actually
                correspond to self.rows and self.columns
         """
-        if not any(isinstance(l, list) for l in self.matrix) and all(isinstance(element, (int, long, float)) for element in self.matrix):
+        if not any(isinstance(l, list) for l in self.matrix) and \
+                all(isinstance(element, (int, long, float))
+                    for element in self.matrix):
             self.matrix = [self.matrix]
             return True
         if len(self.matrix) != self.rows:
@@ -89,14 +118,19 @@ class Matrix(object):
         if isinstance(other, (int, long, float)):
             assert self.valid_check()
             add = Matrix(self.rows, self.columns)
-            add.matrix = [[self.matrix[r][c] + other for c in range(self.columns)] for r in range(self.rows)]
+            add.matrix = [
+                [self.matrix[r][c] + other for c in range(self.columns)]
+                for r in range(self.rows)]
             return add
         else:
             assert self.same_dimensions_check(other)
             add = Matrix(self.rows, self.columns)
             if not any(isinstance(l, list) for l in self.matrix):
                 self.matrix = [self.matrix]
-            add.matrix = [[self.matrix[r][c] + other.matrix[r][c] for c in range(self.columns)] for r in range(self.rows)]
+            add.matrix = [
+                [self.matrix[r][c] + other.matrix[r][c]
+                    for c in range(self.columns)]
+                for r in range(self.rows)]
             return add
 
     def __radd__(self, other):
@@ -121,7 +155,8 @@ class Matrix(object):
         new = Matrix(self.columns, self.rows)
         if not any(isinstance(l, list) for l in self.matrix):
             self.matrix = [self.matrix]
-        new.matrix = [[row[i] for row in self.matrix] for i in range(self.columns)]
+        new.matrix = [[row[i] for row in self.matrix]
+                      for i in range(self.columns)]
         return new
 
     def __mul__(self, other):
@@ -138,7 +173,9 @@ class Matrix(object):
             new = Matrix(self.rows, self.columns)
             if not any(isinstance(l, list) for l in self.matrix):
                 self.matrix = [self.matrix]
-            new.matrix = [[self.matrix[r][c] * other for c in range(self.columns)] for r in range(self.rows)]
+            new.matrix = [[self.matrix[r][c] * other
+                          for c in range(self.columns)]
+                          for r in range(self.rows)]
             return new
         else:
             assert self.multiply_check(other)
@@ -148,7 +185,8 @@ class Matrix(object):
                 self.matrix = [self.matrix]
             for x in range(self.rows):
                 for y in range(temp_other.rows):
-                    new.matrix[x][y] = dot_product(self.matrix[x], temp_other.matrix[y])
+                    new.matrix[x][y] = dot_product(self.matrix[x],
+                                                   temp_other.matrix[y])
             return new
 
     def __rmul__(self, other):
@@ -172,7 +210,8 @@ class Matrix(object):
             self.matrix = [self.matrix]
         for x in range(self.rows):
             for y in range(temp_other.rows):
-                new.matrix[x][y] = expanded_dot_product(self.matrix[x], temp_other.matrix[y])
+                new.matrix[x][y] = expanded_dot_product(self.matrix[x],
+                                                        temp_other.matrix[y])
         return new
 
     def change_element(self, row, column, new_element):
@@ -218,7 +257,9 @@ class Matrix(object):
         for row in self.matrix:
             eq = str()
             for var in range(len(row[:-1])):
-                eq += str("(" + str(row[var]) + ")" + "x" + str(var + 1) + " + ").rjust(space_length(self.matrix) + 7)
+                row_str = str("(" + str(row[var]) + ")" +
+                              "x" + str(var + 1) + " + ")
+                eq += row_str.rjust(space_length(self.matrix) + 7)
             temp.append(eq[:-3] + " = " + str(row[-1]))
         return '\n'.join(temp) + "\n"
 
@@ -230,8 +271,11 @@ class Matrix(object):
         constants = Matrix(self.transpose().matrix[-1]).transpose()
         equals = Matrix(self.rows, 1, " ")
         equals.change_element(self.rows / 2, 1, "=")
-        variables = Matrix(["x" + str(i + 1) for i in range(self.rows)]).transpose()
-        return coefficients.augment(Matrix(self.rows, 1, " ")).augment(variables).augment(equals).augment(constants)
+        variables = Matrix(["x" + str(i + 1)
+                            for i in range(self.rows)]).transpose()
+        return coefficients.augment(
+            Matrix(self.rows, 1, " ")
+        ).augment(variables).augment(equals).augment(constants)
 
     def P(self, row_i, row_j):
         """Permutes the row_i'th and row_j'th rows in self.matrix in place"""
@@ -243,20 +287,25 @@ class Matrix(object):
     def M(self, row, scalar):
         """Multiply every element of the row'th row by nonzero scalar"""
         assert row > 0 and scalar != 0
-        self.matrix[row - 1] = [scalar * element for element in self.matrix[row - 1]]
+        self.matrix[row - 1] = [scalar * element
+                                for element in self.matrix[row - 1]]
 
     def A(self, row_i, row_j, scalar):
         """Adds to the elements of the row_j'th row the scalar * the
            corresponding elements of the row_i'th row."""
         assert row_i > 0 and row_j > 0
-        self.matrix[row_j - 1] = [a + scalar * b for a, b in zip(self.matrix[row_j - 1], self.matrix[row_i - 1])]
+        self.matrix[row_j - 1] = [a + scalar * b for a, b in zip(
+            self.matrix[row_j - 1], self.matrix[row_i - 1])]
 
     def row_echelon_check(self):
         """Checks if a matrix is in row echelon form"""
         assert self.valid_check()
         if self == Matrix(self.rows, self.columns):
             return True
-        if not all(first_nonzero(row) == 1 or first_nonzero(row) == 0 for row in self.matrix):
+        if not all(first_nonzero(row) == 1 or
+                   first_nonzero(row) == 0 for row in self.matrix):
             return False
-        positions = [one_position(self.matrix[rowNum], rowNum) for rowNum in range(self.rows)]
-        return all(after > before for before, after in zip(positions, positions[1:]))
+        positions = [one_position(self.matrix[rowNum], rowNum)
+                     for rowNum in range(self.rows)]
+        return all(after > before for before, after in zip(
+            positions, positions[1:]))
