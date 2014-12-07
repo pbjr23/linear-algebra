@@ -11,11 +11,11 @@ class Matrix(object):
         if len(args) == 2:
             self.rows = args[0]
             self.columns = args[1]
-            self.matrix = [[0]*args[1] for x in range(args[0])]
+            self.matrix = [[0] * args[1] for x in range(args[0])]
         if len(args) == 3:
             self.rows = args[0]
             self.columns = args[1]
-            self.matrix = [[args[2]]*args[1] for x in range(args[0])]
+            self.matrix = [[args[2]] * args[1] for x in range(args[0])]
         if len(args) == 1 and matrix_check(args[0]):
             if not any(isinstance(l, list) for l in args[0]):
                 self.rows = 1
@@ -175,11 +175,11 @@ class Matrix(object):
                 new.matrix[x][y] = expanded_dot_product(self.matrix[x], temp_other.matrix[y])
         return new
 
-    def change_element(self, row, column, ei9element):
+    def change_element(self, row, column, new_element):
         """Changes the element in the specified row and the specified column to
            new_element. """
         assert row > 0 and column > 0
-        self.matrix[row-1][column-1] = new_element
+        self.matrix[row - 1][column - 1] = new_element
 
     def symmetric_check(self):
         """Checks if a matrix is symmetric.
@@ -201,36 +201,37 @@ class Matrix(object):
                                               3 4 5
         """
         assert self.rows == other.rows
-        aug = Matrix(self.rows, self.columns+other.columns)
+        aug = Matrix(self.rows, self.columns + other.columns)
         for row in range(self.rows):
             for col1 in range(self.columns):
                 aug.matrix[row][col1] = self.matrix[row][col1]
             for col2 in range(other.columns):
-                aug.matrix[row][col2+self.columns] = other.matrix[row][col2]
+                aug.matrix[row][col2 + self.columns] = other.matrix[row][col2]
         return aug
 
     def linear_equation_print(self):
         """Prints the matrix as a system of linear equations. Assumes that an
-           augmented matrix is given and so the last column is the system constants
-           while the rest of the matrix are the system coefficients."""
+           augmented matrix is given and so the last column is the system
+           constants while the rest of the matrix are the system
+           coefficients."""
         temp = []
         for row in self.matrix:
             eq = str()
             for var in range(len(row[:-1])):
-                eq += str("(" + str(row[var]) + ")" + "x" + str(var+1) + " + ").rjust(space_length(self.matrix)+7)
+                eq += str("(" + str(row[var]) + ")" + "x" + str(var + 1) + " + ").rjust(space_length(self.matrix) + 7)
             temp.append(eq[:-3] + " = " + str(row[-1]))
-        return '\n'.join(temp) +  "\n"
+        return '\n'.join(temp) + "\n"
 
     def vector_equation_print(self):
         """Prints the matrix as a system of linear equations. Assumes that an
-           augmented matrix is given and so the last column is the system constants
-           while the rest of the matrix are the system coefficients."""
+        augmented matrix is given and so the last column is the system
+        constants while the rest of the matrix are the system coefficients."""
         coefficients = Matrix(self.transpose().matrix[:-1]).transpose()
         constants = Matrix(self.transpose().matrix[-1]).transpose()
         equals = Matrix(self.rows, 1, " ")
-        equals.change_element(self.rows/2, 1, "=")
-        variables = Matrix(["x" + str(i+1) for i in range(self.rows)]).transpose()
-        return coefficients.augment(Matrix(self.rows,1," ")).augment(variables).augment(equals).augment(constants)
+        equals.change_element(self.rows / 2, 1, "=")
+        variables = Matrix(["x" + str(i + 1) for i in range(self.rows)]).transpose()
+        return coefficients.augment(Matrix(self.rows, 1, " ")).augment(variables).augment(equals).augment(constants)
 
     def P(self, row_i, row_j):
         """Permutes the row_i'th and row_j'th rows in self.matrix in place"""
