@@ -1,5 +1,5 @@
 cli:
-	python main.py cli
+	python cli.py
 
 .PHONY: app
 app:

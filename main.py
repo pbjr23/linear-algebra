@@ -1,5 +1,8 @@
 import sys
-from subprocess import Popen
+import readline
+import rlcompleter
+import code
+
 
 def print_helptext():
     print """Python Linear Algebra toolkit.
@@ -19,7 +22,7 @@ try:
     elif sys.argv[1] == "--version":
         print "Python Linear Algebra Toolkit 1.0.0"
     elif sys.argv[1] == "cli":
-        Popen("python -i cli.py", shell=True)
+        import cli
     elif sys.argv[1] == "app":
         from app import app
         app.run()
@@ -28,4 +31,3 @@ try:
         print_helptext()
 except:
     print_helptext()
-
