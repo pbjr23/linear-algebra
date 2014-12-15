@@ -1,56 +1,65 @@
-def matrix_check(t):
-    """Checks whether an input list can be turned into a matrix object"""
-    if not any(isinstance(l, list) for l in t):
-        t = [t]
-    columns = len(t[0])
-    return all(len(row) == columns for row in t)
-
-def dot_product(t1, t2):
-    """Returns the dot product of two input lists"""
-    if len(t1) == len(t2):
-        return sum([t1[i] * t2[i] for i in range(len(t1))])
-
-def expanded_dot_product(t1, t2):
-    """Returns the expanded dot product of two input lists as a string"""
-    if len(t1) == len(t2):
-        expanded = str()
-        for i in range(len(t1)):
-            expanded += "(" + str(t1[i]) + " x " + str(t2[i]) + ")" + " + "
-        return expanded[:-3]
-
-def identity_matrix(n):
-    """Returns n x n identity matrix"""
-    i = Matrix(n, n)
-    for j in range(n):
-        i.matrix[j][j] = 1
-    return i
-
-def space_length(t):
-    """Takes in matrix as input (eg:self.matrix) and returns length of
-       longest element. For use in printing matrices with correct spacing."""
-    return max([len(str(element)) for row in t for element in row])
-
-def first_nonzero(t):
-    """Takes an input list and return the first nonzero element"""
-    for element in t:
-        if element != 0:
-            return element
-    return 0
-
-def one_position(row, rowNum):
-    """Returns the position of the first one or an appropriate value if
-       the row is all zeroes. The goal is that the positions of a row
-       echelon matrix will be in increasing order."""
-    columns = len(row)
-    for element in range(columns):
-        if row[element] == 1:
-            return element
-    if all(element == 0 for element in row):
-        return element + columns
-
-
 class Matrix(object):
     """Python matrix representation"""
+
+    @staticmethod
+    def matrix_check(t):
+        """Checks whether an input list can be turned into a matrix object"""
+        if not any(isinstance(l, list) for l in t):
+            t = [t]
+        columns = len(t[0])
+        return all(len(row) == columns for row in t)
+
+    @staticmethod
+    def dot_product(t1, t2):
+        """Returns the dot product of two input lists"""
+        if len(t1) == len(t2):
+            return sum([t1[i] * t2[i] for i in range(len(t1))])
+
+    @staticmethod
+    def expanded_dot_product(t1, t2):
+        """Returns the expanded dot product of two input lists as a string"""
+        if len(t1) == len(t2):
+            expanded = str()
+            for i in range(len(t1)):
+                expanded += "(" + str(t1[i]) + " x " + str(t2[i]) + ")" + " + "
+            return expanded[:-3]
+        else:
+            raise Exception("Length of the two lists must be the same!")
+
+    @staticmethod
+    def identity_matrix(n):
+        """Returns n x n identity matrix"""
+        i = Matrix(n, n)
+        for j in range(n):
+            i.matrix[j][j] = 1
+        return i
+
+    @staticmethod
+    def space_length(t):
+        """Takes in matrix as input (eg:self.matrix) and returns length of
+           longest element. For use in printing matrices with correct spacing."""
+        return max([len(str(element)) for row in t for element in row])
+
+    @staticmethod
+    def first_nonzero(t):
+        """Takes an input list and return the first nonzero element"""
+        for element in t:
+            if element != 0:
+                return element
+        return 0
+
+    @staticmethod
+    def one_position(row, row_num):
+        """Returns the position of the first one or an appropriate value if
+           the row is all zeroes. The goal is that the positions of a row
+           echelon matrix will be in increasing order."""
+        columns = len(row)
+        for element in range(columns):
+            if row[element] == 1:
+                return element
+        if all(element == 0 for element in row):
+            return element + columns
+
 
     def __init__(self, *args):
         """Initializes the matrix
@@ -67,7 +76,7 @@ class Matrix(object):
             self.rows = args[0]
             self.columns = args[1]
             self.matrix = [[args[2]] * args[1] for x in range(args[0])]
-        if len(args) == 1 and matrix_check(args[0]):
+        if len(args) == 1 and self.matrix_check(args[0]):
             if not any(isinstance(l, list) for l in args[0]):
                 self.rows = 1
                 self.columns = len(args[0])
@@ -75,7 +84,7 @@ class Matrix(object):
                 self.rows = len(args[0])
                 self.columns = len(args[0][0])
             self.matrix = args[0]
-        if (len(args) == 1 and not matrix_check(args[0])) or len(args) > 3:
+        if (len(args) == 1 and not self.matrix_check(args[0])) or len(args) > 3:
             raise Exception("Invalid format given")
 
     def __str__(self):
@@ -87,7 +96,7 @@ class Matrix(object):
             self.matrix = [self.matrix]
         return '\n'.join(
             [' '.join(
-                [str(element).rjust(space_length(self.matrix))
+                [str(element).rjust(self.space_length(self.matrix))
                     for element in row]) for row in self.matrix]) + "\n"
 
     def __eq__(self, other):
@@ -212,7 +221,7 @@ class Matrix(object):
                 self.matrix = [self.matrix]
             for x in range(self.rows):
                 for y in range(temp_other.rows):
-                    new.matrix[x][y] = dot_product(self.matrix[x],
+                    new.matrix[x][y] = self.dot_product(self.matrix[x],
                                                    temp_other.matrix[y])
             return new
 
@@ -237,7 +246,7 @@ class Matrix(object):
             self.matrix = [self.matrix]
         for x in range(self.rows):
             for y in range(temp_other.rows):
-                new.matrix[x][y] = expanded_dot_product(self.matrix[x],
+                new.matrix[x][y] = self.expanded_dot_product(self.matrix[x],
                                                         temp_other.matrix[y])
         return new
 
@@ -286,7 +295,7 @@ class Matrix(object):
             for var in range(len(row[:-1])):
                 row_str = str("(" + str(row[var]) + ")" +
                               "x" + str(var + 1) + " + ")
-                eq += row_str.rjust(space_length(self.matrix) + 7)
+                eq += row_str.rjust(self.space_length(self.matrix) + 7)
             temp.append(eq[:-3] + " = " + str(row[-1]))
         return '\n'.join(temp) + "\n"
 
@@ -329,10 +338,10 @@ class Matrix(object):
         assert self.valid_check()
         if self == Matrix(self.rows, self.columns):
             return True
-        if not all(first_nonzero(row) == 1 or
-                   first_nonzero(row) == 0 for row in self.matrix):
+        if not all(self.first_nonzero(row) == 1 or
+                   self.first_nonzero(row) == 0 for row in self.matrix):
             return False
-        positions = [one_position(self.matrix[rowNum], rowNum)
-                     for rowNum in range(self.rows)]
+        positions = [self.one_position(self.matrix[row_num], row_num)
+                     for row_num in range(self.rows)]
         return all(after > before for before, after in zip(
             positions, positions[1:]))
