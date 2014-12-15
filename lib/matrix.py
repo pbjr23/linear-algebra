@@ -99,6 +99,9 @@ class Matrix(object):
                 [str(element).rjust(self.space_length(self.matrix))
                     for element in row]) for row in self.matrix]) + "\n"
 
+    def __repr__(self):
+        return self.__str__()
+
     def __eq__(self, other):
         """ == Checks if two matrices are equal."""
         return self.matrix == other.matrix
