@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, request, jsonify, redirect, url_for
-import matrix
+from lib import *
 import parser
 
 
@@ -15,7 +15,7 @@ def evaluate():
     if request.method == 'POST':
         raw_string = request.form['raw_string']
 
-        latex = parser.latexify(....)
+        # latex = parser.latexify(....)
     return render_template('index.html', output=output)
 
 if __name__ == '__main__':

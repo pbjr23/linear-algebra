@@ -24,7 +24,7 @@ try:
     elif sys.argv[1] == "cli":
         import cli
     elif sys.argv[1] == "app":
-        from app import app
+        from app.app import app
         app.run()
     else:
         print "Unknown command: " + sys.argv[1]

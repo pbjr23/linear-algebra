@@ -1,5 +1,5 @@
 import code
-from lib import *
+from app.lib import *
 
 vars = globals()
 vars.update(locals())
