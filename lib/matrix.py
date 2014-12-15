@@ -1,25 +1,52 @@
-def first_nonzero(row):
-    pass
+def matrix_check(t):
+    """Checks whether an input list can be turned into a matrix object"""
+    if not any(isinstance(l, list) for l in t):
+        t = [t]
+    columns = len(t[0])
+    return all(len(row) == columns for row in t)
 
+def dot_product(t1, t2):
+    """Returns the dot product of two input lists"""
+    if len(t1) == len(t2):
+        return sum([t1[i] * t2[i] for i in range(len(t1))])
 
-def one_position(pos):
-    pass
+def expanded_dot_product(t1, t2):
+    """Returns the expanded dot product of two input lists as a string"""
+    if len(t1) == len(t2):
+        expanded = str()
+        for i in range(len(t1)):
+            expanded += "(" + str(t1[i]) + " x " + str(t2[i]) + ")" + " + "
+        return expanded[:-3]
 
+def identity_matrix(n):
+    """Returns n x n identity matrix"""
+    i = Matrix(n, n)
+    for j in range(n):
+        i.matrix[j][j] = 1
+    return i
 
-def matrix_check(matrix):
-    pass
+def space_length(t):
+    """Takes in matrix as input (eg:self.matrix) and returns length of
+       longest element. For use in printing matrices with correct spacing."""
+    return max([len(str(element)) for row in t for element in row])
 
+def first_nonzero(t):
+    """Takes an input list and return the first nonzero element"""
+    for element in t:
+        if element != 0:
+            return element
+    return 0
 
-def space_length(i):
-    pass
-
-
-def dot_product(m1, m2):
-    pass
-
-
-def expanded_dot_product(m1, m2):
-    pass
+def one_position(row, rowNum):
+    """Returns the position of the first one or an appropriate value if
+       the row is all zeroes. The goal is that the positions of a row
+       echelon matrix will be in increasing order."""
+    columns = len(row)
+    for element in range(columns):
+        if row[element] == 1:
+            return element
+    if all(element == 0 for element in row):
+        return element + columns
 
 
 class Matrix(object):
