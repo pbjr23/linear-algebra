@@ -15,8 +15,8 @@ def evaluate():
     if request.method == 'POST':
         raw_string = request.form['raw_string']
 
-        stock_info = transactions.get_info(stock_symbol_lookup)
-    return render_template('index.html', balance=session['balance'], inventory=session['inventory'], selected=stock_info)
+        latex = parser.latexify(....)
+    return render_template('index.html', output=output)
 
 if __name__ == '__main__':
     app.run(debug=True)
