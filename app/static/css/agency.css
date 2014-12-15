@@ -679,6 +679,10 @@ section#contact .form-group textarea.form-control {
     height: 236px;
 }
 
+.form-group, input.form-control {
+    width: 500px !important;
+}
+
 section#contact .form-control:focus {
     border-color: #fed136;
     box-shadow: none;
