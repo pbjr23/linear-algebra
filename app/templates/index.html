@@ -86,7 +86,7 @@
                 <div class="intro-heading">Try it!</div>
                 <form action="/evaluate" class="navbar-form" role="form" method="POST">
                     <div class="form-group">
-                        <input type="text" name="raw_string" class="form-control" placeholder="Enter expression">
+                        <input type="text" name="raw_string" class="form-control" placeholder="{{ input|default('Enter expression')}}">
                     </div>
                     <button type="submit" class="btn btn-primary">Compute</button>
                 </form>

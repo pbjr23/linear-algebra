@@ -6,7 +6,7 @@ import parser
 app = Flask(__name__)
 
 @app.route('/')
-def main(output=None):
+def main(input=None, output=None):
     return render_template('index.html', output=output)
 
 @app.route('/evaluate', methods=['POST'])
@@ -16,7 +16,7 @@ def evaluate():
         raw_string = request.form['raw_string']
 
         # latex = parser.latexify(....)
-    return render_template('index.html', output=output)
+    return render_template('index.html', input=raw_string, output=output)
 
 if __name__ == '__main__':
     app.run(debug=True)
