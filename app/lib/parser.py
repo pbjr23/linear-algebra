@@ -1,9 +1,11 @@
 from matrix import Matrix
+from functools import wraps
 import random
 
 
+@latex
 def produce_output(s):
-    return latexify(eval(parse_string(s)))
+    return eval(parse_string(s))
 
 
 def randomize(rows, columns, start=-10, end=10):
@@ -51,3 +53,11 @@ def latexify(matrix_object):
     m = [[str(col) for col in row] for row in m]
     m = '\\\\'.join([' & '.join(row) for row in m])
     return start + m + end
+
+
+def latex(f):
+    """Custom decorator to output result in LaTeX using latexify"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        return latexify(f(*args, **kwargs))
+    return decorated
