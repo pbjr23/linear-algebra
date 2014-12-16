@@ -1,14 +1,31 @@
 from matrix import Matrix
+import random
 
 def produce_output(s):
     return latexify(eval(parse_string(s)))
 
+def randomize(rows, columns, random_range=[]):
+    """Creates a random matrix with the specified number of rows and columns.
+    If no range is specified, it is assumed to be from -10 to 10. """
+    start, end = -10, 10
+    if random_range:
+        start, end = random_range[0], random_range[-1]
+
+    m = Matrix([[random.randint(start, end) for _ in range(columns)]
+                for _ in range(rows)])
+    return m
+
+def transpose(m):
+    """Takes in a matrix returns the transpose."""
+    return m.transpose()
 
 def parse_string(s):
     """Formats the raw input string correctly so it can be evaluated
     on the backend properly, eg: by adding Matrix() around matrices."""
     brackets = 0
     offset = 0
+    s = s.replace('^', '**').lower()
+    s = s.replace('random', 'randomize')
     list_s = list(s)
     output = list(s)
     for i, char in enumerate(list_s):
@@ -36,3 +53,4 @@ def latexify(matrix_object):
     m = '\\\\'.join([' & '.join(row) for row in m])
     return start + m + end
 
+print eval(parse_string("transpose([[1,2,3], [1,4,5]])"))

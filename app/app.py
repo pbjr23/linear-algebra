@@ -11,9 +11,12 @@ def main(input=None, output=None):
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
     """Evaluates the input expression and outputs the result."""
-    raw_string = request.form['raw_string']
-    output = produce_output(raw_string)
-    return render_template('index.html', input=raw_string, output=output)
+    try:
+        raw_string = request.form['raw_string']
+        output = produce_output(raw_string)
+        return render_template('index.html', input=raw_string, output=output)
+    except:
+
 
 if __name__ == '__main__':
     app.run(debug=True)

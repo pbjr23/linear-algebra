@@ -1,3 +1,6 @@
+class MatrixException(Exception):
+    pass
+
 class Matrix(object):
     """Python matrix representation"""
 
@@ -85,7 +88,7 @@ class Matrix(object):
                 self.columns = len(args[0][0])
             self.matrix = args[0]
         if (len(args) == 1 and not self.matrix_check(args[0])) or len(args) > 3:
-            raise Exception("Invalid format given")
+            raise Exception("Invalid matrix format given")
 
     def __str__(self):
         """Prints out the matrix as a string, without any brackets around it
@@ -97,9 +100,12 @@ class Matrix(object):
         return '\n'.join(
             [' '.join(
                 [str(element).rjust(self.space_length(self.matrix))
-                    for element in row]) for row in self.matrix]) + "\n"
+                    for element in row]) for row in self.matrix])
 
     def __repr__(self):
+        """Prints out the matrix as a string, without any brackets around it
+           Format:  1 2     <-> Matrix([[1, 2], [3, 4]])
+        """
         return self.__str__()
 
     def __eq__(self, other):
@@ -232,6 +238,13 @@ class Matrix(object):
         """Reverse multipy function, adds support for format: 2 * bar
            where bar is a Matrix object"""
         return self.__mul__(other)
+
+    def __pow__(self, number):
+        backup = self
+        for i in xrange(number - 1):
+            self = self * backup
+        return self
+
 
     def multiply_expanded(self, other):
         """Matrix multiplication that shows expanded dot product.
