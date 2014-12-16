@@ -2,6 +2,7 @@ from matrix import Matrix
 import random
 
 def produce_output(s):
+    """Outputs the LaTeX code for the matrix"""
     return latexify(eval(parse_string(s)))
 
 def randomize(rows, columns, start=-10, end=10):
@@ -11,8 +12,12 @@ def randomize(rows, columns, start=-10, end=10):
                 for _ in range(rows)])
 
 def transpose(m):
-    """Takes in a matrix returns the transpose."""
+    """Takes in a matrix and returns the transpose."""
     return m.transpose()
+
+def determinant(m):
+    """Takes in a matrix and returns the determinant."""
+    return m.determinant()
 
 def parse_string(s):
     """Formats the raw input string correctly so it can be evaluated
@@ -47,5 +52,3 @@ def latexify(matrix_object):
     m = [[str(col) for col in row] for row in m]
     m = '\\\\'.join([' & '.join(row) for row in m])
     return start + m + end
-
-print latexify(eval(parse_string('transpose([[1,0],[6,5]])')))

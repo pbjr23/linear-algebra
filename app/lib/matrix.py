@@ -88,7 +88,7 @@ class Matrix(object):
                 self.columns = len(args[0][0])
             self.matrix = args[0]
         if (len(args) == 1 and not self.matrix_check(args[0])) or len(args) > 3:
-            raise Exception("Invalid matrix format given")
+            raise MatrixException("Invalid matrix format given")
 
     def __str__(self):
         """Prints out the matrix as a string, without any brackets around it
@@ -142,7 +142,10 @@ class Matrix(object):
     def same_dimensions_check(self, other):
         """First makes sure both matrices are valid. Then makes sure the
            dimensions are the same for both."""
-        assert self.valid_check() and other.valid_check()
+        try:
+            assert self.valid_check() and other.valid_check()
+        except AssertionError:
+            raise MatrixException('Please enter valid matrices.')
         return self.rows == other.rows and self.columns == other.columns
 
     def multiply_check(self, other):
@@ -161,14 +164,20 @@ class Matrix(object):
               foo + 2 <-> returns a matrix of the form Matrix(2, 2, 2)
         """
         if isinstance(other, (int, long, float)):
-            assert self.valid_check()
+            try:
+                assert self.valid_check()
+            except AssertionError:
+                raise MatrixException('Please enter valid matrix.')
             add = Matrix(self.rows, self.columns)
             add.matrix = [
                 [self.matrix[r][c] + other for c in range(self.columns)]
                 for r in range(self.rows)]
             return add
         else:
-            assert self.same_dimensions_check(other)
+            try:
+                assert self.same_dimensions_check(other)
+            except AssertionError:
+                raise MatrixException('Dimensions don\'t match for these matrices.')
             add = Matrix(self.rows, self.columns)
             if not any(isinstance(l, list) for l in self.matrix):
                 self.matrix = [self.matrix]
@@ -223,7 +232,10 @@ class Matrix(object):
                           for r in range(self.rows)]
             return new
         else:
-            assert self.multiply_check(other)
+            try:
+                assert self.multiply_check(other)
+            except AssertionError:
+                raise MatrixException('Dimensions are incorrect to multiply these matrices.')
             new = Matrix(self.rows, other.columns)
             temp_other = other.transpose()
             if not any(isinstance(l, list) for l in self.matrix):
@@ -255,7 +267,10 @@ class Matrix(object):
               bar = Matrix(2, 2, 5)
               print foo * bar <-> returns a matrix of the form Matrix(2,2,0)
         """
-        assert self.multiply_check(other)
+        try:
+            assert self.multiply_check(other)
+        except AssertionError:
+            raise MatrixException('Dimensions are incorrect to multiply these matrices.')
         new = Matrix(self.rows, other.columns)
         temp_other = other.transpose()
         if not any(isinstance(l, list) for l in self.matrix):
@@ -266,10 +281,38 @@ class Matrix(object):
                                                         temp_other.matrix[y])
         return new
 
+
+    def determinant(self):
+        """Returns the determinant of the matrix"""
+        try:
+            assert self.rows == self.columns and self.rows >= 2
+        except AssertionError:
+            raise MatrixException("Invalid dimensions for determinant")
+        output = []
+        if self.rows == 2:
+            # ad - bc
+            return ((self.matrix[0][0] * self.matrix[1][1]) -
+                (self.matrix[0][1] * self.matrix[1][0]))
+        else:
+            for i in xrange(self.rows):
+                new_matrix = Matrix(self.matrix)
+                # Delete first row and column
+                new_matrix = Matrix([row[1:] for row in self.matrix[1:]])
+
+                mult = self.matrix[0][i] * -1 ** (i + 2)
+                ans = self.determinant(new_matrix)
+                output.append(mult * det)
+            return sum(output)
+
+
+
     def change_element(self, row, column, new_element):
         """Changes the element in the specified row and the specified column to
            new_element. """
-        assert row > 0 and column > 0
+        try:
+            assert row > 0 and column > 0
+        except AssertionError:
+            raise MatrixException("Matrix must have elements!")
         self.matrix[row - 1][column - 1] = new_element
 
     def symmetric_check(self):
@@ -291,7 +334,10 @@ class Matrix(object):
                self.augment(other)  returns   1 2 5
                                               3 4 5
         """
-        assert self.rows == other.rows
+        try:
+            assert self.rows == other.rows
+        except AssertionError:
+            raise MatrixException("Number of rows must be the same!")
         aug = Matrix(self.rows, self.columns + other.columns)
         for row in range(self.rows):
             for col1 in range(self.columns):
@@ -331,27 +377,39 @@ class Matrix(object):
 
     def P(self, row_i, row_j):
         """Permutes the row_i'th and row_j'th rows in self.matrix in place"""
-        assert row_i > 0 and row_j > 0
+        try:
+            assert row_i > 0 and row_j > 0
+        except AssertionError:
+            raise MatrixException("Enter valid row numbers!")
         temp = self.matrix[row_i - 1]
         self.matrix[row_i - 1] = self.matrix[row_j - 1]
         self.matrix[row_j - 1] = temp
 
     def M(self, row, scalar):
         """Multiply every element of the row'th row by nonzero scalar"""
-        assert row > 0 and scalar != 0
+        try:
+            assert row > 0 and scalar != 0
+        except AssertionError:
+            raise MatrixException("Please enter valid row number/scalar")
         self.matrix[row - 1] = [scalar * element
                                 for element in self.matrix[row - 1]]
 
     def A(self, row_i, row_j, scalar):
         """Adds to the elements of the row_j'th row the scalar * the
            corresponding elements of the row_i'th row."""
-        assert row_i > 0 and row_j > 0
+        try:
+            assert row_i > 0 and row_j > 0
+        except AssertionError:
+            raise MatrixException("Enter valid row numbers!")
         self.matrix[row_j - 1] = [a + scalar * b for a, b in zip(
             self.matrix[row_j - 1], self.matrix[row_i - 1])]
 
     def row_echelon_check(self):
         """Checks if a matrix is in row echelon form"""
-        assert self.valid_check()
+        try:
+            assert self.valid_check()
+        except:
+            raise MatrixException("Invalid matrix entered!")
         if self == Matrix(self.rows, self.columns):
             return True
         if not all(self.first_nonzero(row) == 1 or
