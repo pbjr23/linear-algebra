@@ -1,6 +1,7 @@
 class MatrixException(Exception):
     pass
 
+
 class Matrix(object):
     """Python matrix representation"""
 
@@ -40,7 +41,7 @@ class Matrix(object):
     @staticmethod
     def space_length(t):
         """Takes in matrix as input (eg:self.matrix) and returns length of
-           longest element. For use in printing matrices with correct spacing."""
+        longest element. For use in printing matrices with correct spacing."""
         return max([len(str(element)) for row in t for element in row])
 
     @staticmethod
@@ -62,7 +63,6 @@ class Matrix(object):
                 return element
         if all(element == 0 for element in row):
             return element + columns
-
 
     def __init__(self, *args):
         """Initializes the matrix
@@ -87,7 +87,8 @@ class Matrix(object):
                 self.rows = len(args[0])
                 self.columns = len(args[0][0])
             self.matrix = args[0]
-        if (len(args) == 1 and not self.matrix_check(args[0])) or len(args) > 3:
+        if (len(args) == 1 and not self.matrix_check(args[0])) \
+                or len(args) > 3:
             raise Exception("Invalid matrix format given")
 
     def __str__(self):
@@ -231,7 +232,7 @@ class Matrix(object):
             for x in range(self.rows):
                 for y in range(temp_other.rows):
                     new.matrix[x][y] = self.dot_product(self.matrix[x],
-                                                   temp_other.matrix[y])
+                                                        temp_other.matrix[y])
             return new
 
     def __rmul__(self, other):
@@ -244,7 +245,6 @@ class Matrix(object):
         for i in xrange(number - 1):
             self = self * backup
         return self
-
 
     def multiply_expanded(self, other):
         """Matrix multiplication that shows expanded dot product.
@@ -262,8 +262,9 @@ class Matrix(object):
             self.matrix = [self.matrix]
         for x in range(self.rows):
             for y in range(temp_other.rows):
-                new.matrix[x][y] = self.expanded_dot_product(self.matrix[x],
-                                                        temp_other.matrix[y])
+                new.matrix[x][y] = \
+                    self.expanded_dot_product(self.matrix[x],
+                                              temp_other.matrix[y])
         return new
 
     def change_element(self, row, column, new_element):
