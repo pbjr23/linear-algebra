@@ -1,3 +1,5 @@
+from itertools import izip
+
 class MatrixException(Exception):
     pass
 
@@ -347,7 +349,7 @@ class Matrix(object):
         """Adds to the elements of the row_j'th row the scalar * the
            corresponding elements of the row_i'th row."""
         assert row_i > 0 and row_j > 0
-        self.matrix[row_j - 1] = [a + scalar * b for a, b in zip(
+        self.matrix[row_j - 1] = [a + scalar * b for a, b in izip(
             self.matrix[row_j - 1], self.matrix[row_i - 1])]
 
     def row_echelon_check(self):
@@ -360,5 +362,5 @@ class Matrix(object):
             return False
         positions = [self.one_position(self.matrix[row_num], row_num)
                      for row_num in range(self.rows)]
-        return all(after > before for before, after in zip(
+        return all(after > before for before, after in izip(
             positions, positions[1:]))
