@@ -1,23 +1,28 @@
 from matrix import Matrix
 import random
 
+
 def produce_output(s):
     """Outputs the LaTeX code for the matrix"""
     return latexify(eval(parse_string(s)))
+
 
 def randomize(rows, columns, start=-10, end=10):
     """Creates a random matrix with the specified number of rows and columns.
     If no range is specified, it is assumed to be from -10 to 10. """
     return Matrix([[random.randint(start, end) for _ in range(columns)]
-                for _ in range(rows)])
+                   for _ in range(rows)])
+
 
 def transpose(m):
     """Takes in a matrix and returns the transpose."""
     return m.transpose()
 
+
 def determinant(m):
     """Takes in a matrix and returns the determinant."""
     return m.determinant()
+
 
 def parse_string(s):
     """Formats the raw input string correctly so it can be evaluated
