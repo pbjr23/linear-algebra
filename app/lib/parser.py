@@ -4,16 +4,11 @@ import random
 def produce_output(s):
     return latexify(eval(parse_string(s)))
 
-def randomize(rows, columns, random_range=[]):
+def randomize(rows, columns, start=-10, end=10):
     """Creates a random matrix with the specified number of rows and columns.
     If no range is specified, it is assumed to be from -10 to 10. """
-    start, end = -10, 10
-    if random_range:
-        start, end = random_range[0], random_range[-1]
-
-    m = Matrix([[random.randint(start, end) for _ in range(columns)]
+    return Matrix([[random.randint(start, end) for _ in range(columns)]
                 for _ in range(rows)])
-    return m
 
 def transpose(m):
     """Takes in a matrix returns the transpose."""
@@ -53,4 +48,4 @@ def latexify(matrix_object):
     m = '\\\\'.join([' & '.join(row) for row in m])
     return start + m + end
 
-print eval(parse_string("transpose([[1,2,3], [1,4,5]])"))
+print latexify(eval(parse_string('transpose([[1,0],[6,5]])')))

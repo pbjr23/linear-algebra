@@ -16,6 +16,7 @@ def evaluate():
         output = produce_output(raw_string)
         return render_template('index.html', input=raw_string, output=output)
     except:
+        raise Exception('Invalid input given!')
 
 
 if __name__ == '__main__':
