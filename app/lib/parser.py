@@ -1,6 +1,8 @@
 from matrix import Matrix
 
-s = "[[1,2,3], [3,4,5]] * 5 + [[1,1,1], [1,1,1]]"
+def produce_output(s):
+    return latexify(eval(parse_string(s)))
+
 
 def parse_string(s):
     """Formats the raw input string correctly so it can be evaluated

@@ -1,1 +1,2 @@
-from matrix import *
+from parser import produce_output
+from matrix import Matrix
