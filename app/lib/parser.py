@@ -3,6 +3,13 @@ from functools import wraps
 import random
 
 
+def latex(f):
+    """Custom decorator to output result in LaTeX using latexify"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        return latexify(f(*args, **kwargs))
+    return decorated
+
 @latex
 def produce_output(s):
     """Outputs the LaTeX code for the matrix"""
@@ -55,15 +62,10 @@ def latexify(matrix_object):
     """Converts a matrix to a LaTeX representation suitable for printing"""
     start = '$\\begin{bmatrix}'
     end = '\end{bmatrix}$'
+    if isinstance(m, Number):
+        return m
     m = matrix_object.matrix
     m = [[str(col) for col in row] for row in m]
     m = '\\\\'.join([' & '.join(row) for row in m])
     return start + m + end
 
-
-def latex(f):
-    """Custom decorator to output result in LaTeX using latexify"""
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        return latexify(f(*args, **kwargs))
-    return decorated

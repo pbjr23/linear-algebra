@@ -407,6 +407,7 @@ class Matrix(object):
         except AssertionError:
             raise MatrixException("Enter valid row numbers!")
         self.matrix[row_j - 1] = [a + scalar * b for a, b in izip(
+            self.matrix[row_j - 1], self.matrix[row_i - 1])]
 
 
     def row_echelon_check(self):
