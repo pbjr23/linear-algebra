@@ -1,3 +1,5 @@
+from itertools import izip
+
 class MatrixException(Exception):
     pass
 
@@ -404,8 +406,8 @@ class Matrix(object):
             assert row_i > 0 and row_j > 0
         except AssertionError:
             raise MatrixException("Enter valid row numbers!")
-        self.matrix[row_j - 1] = [a + scalar * b for a, b in zip(
-            self.matrix[row_j - 1], self.matrix[row_i - 1])]
+        self.matrix[row_j - 1] = [a + scalar * b for a, b in izip(
+
 
     def row_echelon_check(self):
         """Checks if a matrix is in row echelon form"""
@@ -420,5 +422,5 @@ class Matrix(object):
             return False
         positions = [self.one_position(self.matrix[row_num], row_num)
                      for row_num in range(self.rows)]
-        return all(after > before for before, after in zip(
+        return all(after > before for before, after in izip(
             positions, positions[1:]))
