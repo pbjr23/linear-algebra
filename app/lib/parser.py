@@ -31,7 +31,7 @@ def latexify(matrix_object):
     """Converts a matrix to a LaTeX representation suitable for printing"""
     start = '$\\begin{bmatrix}'
     end = '\end{bmatrix}$'
-    m = e.matrix
+    m = matrix_object.matrix
     m = [[str(col) for col in row] for row in m]
     m = '\\\\'.join([' & '.join(row) for row in m])
     return start + m + end
