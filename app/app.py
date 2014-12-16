@@ -1,6 +1,5 @@
 from flask import Flask, render_template, session, request, jsonify, redirect, url_for
 from lib import *
-import parser
 
 
 app = Flask(__name__)
@@ -12,10 +11,8 @@ def main(output=None):
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
     """Evaluates the input expression and outputs the result."""
-    if request.method == 'POST':
-        raw_string = request.form['raw_string']
-
-        # latex = parser.latexify(....)
+    raw_string = request.form['raw_string']
+    output = produce_output(raw_string)
     return render_template('index.html', output=output)
 
 if __name__ == '__main__':
