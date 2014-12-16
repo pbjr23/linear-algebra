@@ -48,7 +48,7 @@ def parse_string(s):
             offset += 1
             brackets += 1
         elif char == ']' and brackets == 1:
-            output.insert(offset + i + 1, ')')
+            output.insert(i+offset+1, ')')
             brackets -= 1
             offset += 1
         elif char == '[':
@@ -62,8 +62,8 @@ def latexify(matrix_object):
     """Converts a matrix to a LaTeX representation suitable for printing"""
     start = '$\\begin{bmatrix}'
     end = '\end{bmatrix}$'
-    if isinstance(m, Number):
-        return m
+    if isinstance(matrix_object, (int, long, float, complex)):
+        return matrix_object
     m = matrix_object.matrix
     m = [[str(col) for col in row] for row in m]
     m = '\\\\'.join([' & '.join(row) for row in m])
