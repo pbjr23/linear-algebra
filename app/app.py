@@ -14,13 +14,14 @@ def main(input=None, output=None):
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
     """Evaluates the input expression and outputs the result."""
+    raw_string = request.form.get('raw_string')
     try:
-        raw_string = request.form['raw_string']
         output = produce_output(raw_string)
-        return render_template('index.html', input=raw_string, output=output)
-    except:
-        raise Exception('Invalid input given!')
-
+    except MatrixException as e:
+        output = str(e)
+    except Exception as e:
+        output = 'Invalid input given!'
+    return render_template('index.html', input=raw_string, output=output)
 
 if __name__ == '__main__':
     app.run(debug=True)
