@@ -1,6 +1,7 @@
 from matrix import Matrix
 from functools import wraps
 import random
+import numpy
 
 
 def latex(f):
@@ -31,6 +32,11 @@ def transpose(m):
 def determinant(m):
     """Takes in a matrix and returns the determinant."""
     return m.determinant()
+
+
+def eig(m):
+    """Takes in a matrix and returns a list of eigenvalues"""
+    return numpy.linalg.eig(m.matrix)[0].tolist()
 
 
 def parse_string(s):
@@ -64,6 +70,8 @@ def latexify(matrix_object):
     end = '\end{bmatrix}$'
     if isinstance(matrix_object, (int, long, float, complex)):
         return matrix_object
+    elif isinstance(matrix_object, list):
+        return ", ".join(map(str, matrix_object))
     m = matrix_object.matrix
     m = [[str(col) for col in row] for row in m]
     m = '\\\\'.join([' & '.join(row) for row in m])
