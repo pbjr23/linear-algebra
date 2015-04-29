@@ -1,5 +1,6 @@
 from itertools import izip
 
+
 class MatrixException(Exception):
     pass
 
@@ -94,7 +95,6 @@ class Matrix(object):
                 or len(args) > 3:
             raise Exception("Invalid matrix format given")
 
-
     def __str__(self):
         """Prints out the matrix as a string, without any brackets around it
            Format:  1 2     <-> print Matrix([[1, 2], [3, 4]])
@@ -182,7 +182,7 @@ class Matrix(object):
             try:
                 assert self.same_dimensions_check(other)
             except AssertionError:
-                raise MatrixException('Dimensions don\'t match for these matrices.')
+                raise MatrixException("Dimensions don't match for these matrices.")
             add = Matrix(self.rows, self.columns)
             if not any(isinstance(l, list) for l in self.matrix):
                 self.matrix = [self.matrix]
@@ -286,7 +286,6 @@ class Matrix(object):
                                               temp_other.matrix[y])
         return new
 
-
     def determinant(self):
         """Returns the determinant of the matrix"""
         try:
@@ -297,7 +296,7 @@ class Matrix(object):
         if self.rows == 2:
             # ad - bc
             return ((self.matrix[0][0] * self.matrix[1][1]) -
-                (self.matrix[0][1] * self.matrix[1][0]))
+                    (self.matrix[0][1] * self.matrix[1][0]))
         else:
             for i in xrange(self.rows):
                 new_matrix = Matrix(self.matrix)
@@ -305,11 +304,9 @@ class Matrix(object):
                 new_matrix = Matrix([row[1:] for row in self.matrix[1:]])
 
                 mult = self.matrix[0][i] * -1 ** (i + 2)
-                ans = self.determinant(new_matrix)
+                det = self.determinant(new_matrix)
                 output.append(mult * det)
             return sum(output)
-
-
 
     def change_element(self, row, column, new_element):
         """Changes the element in the specified row and the specified column to
@@ -408,7 +405,6 @@ class Matrix(object):
             raise MatrixException("Enter valid row numbers!")
         self.matrix[row_j - 1] = [a + scalar * b for a, b in izip(
             self.matrix[row_j - 1], self.matrix[row_i - 1])]
-
 
     def row_echelon_check(self):
         """Checks if a matrix is in row echelon form"""
