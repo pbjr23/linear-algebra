@@ -35,9 +35,14 @@ def determinant(m):
     return m.determinant()
 
 
-def eig(m):
+def eigval(m):
     """Takes in a matrix and returns a list of eigenvalues"""
     return numpy.linalg.eig(m.matrix)[0].tolist()
+
+
+def eigvec(m):
+    """Takes in a matrix and returns a list of eigenvalues"""
+    return numpy.linalg.eig(m.matrix)[1].tolist()
 
 
 def parse_string(s):
